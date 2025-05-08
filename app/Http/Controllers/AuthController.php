@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 use App\Models\User;
 
 class AuthController extends Controller
@@ -18,6 +19,53 @@ class AuthController extends Controller
             ]
         ]);
     }
+
+    public function unauthorized()
+    {
+        return response()->json([
+            'error' => 'Não autorizado',
+        ]);
+    }
+
+    public function login(Request $request)
+    {
+        $email = $request->input('email');
+        $password = $request->input('password');
+
+        if ($email && $password) {
+            $token = Auth::attempt([
+                'email' => $email,
+                'password' => $password
+            ]);
+
+            if (!$token) {
+                return \response()->json([
+                    'error' => 'E-mail ou senha incorretos!'
+                ]);
+            }
+
+            return \response()->json([
+                'token' => $token
+            ]);
+        }
+        return \response()->json([
+            'error' => 'Os dados não foram preenchidos!'
+        ]);
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+        return response()->json(['message' => 'Logout efetuado com sucesso!']);
+    }
+
+    /*public function refresh()
+    {
+        $token = auth()->refresh();
+        return response()->json([
+            'token' => $token
+        ]);
+    }*/
 
     public function create(Request $request)
     {
