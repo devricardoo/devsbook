@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use App\Models\Post;
+use App\Models\PostLike;
+use App\Models\PostComment;
+use App\Models\UserRelation;
+use App\Models\User;
 
 class FeedController extends Controller
 {
@@ -15,11 +19,6 @@ class FeedController extends Controller
     {
         $this->middleware('auth:api');
         $this->loggedUser = auth()->user();
-    }
-
-    public function read()
-    {
-        return response()->json(['teste' => 'ok']);
     }
 
     public function create(Request $request)
@@ -74,5 +73,18 @@ class FeedController extends Controller
         } else {
             return response()->json(['error' => 'Dados não enviados!'], 422);
         }
+    }
+
+    public function read(Request $request)
+    {
+        $page = intval($request->input('page'));
+        $perPage = 2;
+
+        //pegar a lista de usuarios que eu sigo (incluindo o meu)
+        $users = [];
+        $userList = UserRelation::where('user_from', $this->loggedUser['id'])->get();
+        //pegar os posts dos usuarios que eu sigo
+
+        //preencher as informaçoes adicionais
     }
 }
