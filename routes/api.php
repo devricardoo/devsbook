@@ -18,16 +18,20 @@ Route::put('/user', 'App\Http\Controllers\UserController@update');
 Route::post('/user/avatar', 'App\Http\Controllers\UserController@updateAvatar');
 Route::post('/user/cover', 'App\Http\Controllers\UserController@updateCover');
 
-//Route::get('/feed', 'App\Http\Controllers\FeedController@read');
-//Route::get('/user/feed', 'App\Http\Controllers\FeedController@userFeed');
-//Route::get('/user/{id}/feed', 'App\Http\Controllers\FeedController@userFeed');
+Route::get('/feed', 'App\Http\Controllers\FeedController@read');
+Route::get('/user/feed', 'App\Http\Controllers\FeedController@userFeed');
+Route::get('/user/photos', 'App\Http\Controllers\FeedController@userPhotos');
+Route::get('/user/{id}/feed', 'App\Http\Controllers\FeedController@userFeed');
+Route::post('/user/{id}/follow', 'App\Http\Controllers\UserController@follow');
+Route::get('/user/{id}/followers', 'App\Http\Controllers\UserController@followers');
+Route::get('/user/{id}/photos', 'App\Http\Controllers\FeedController@userPhotos');
 
-//Route::get('/user', 'App\Http\Controllers\UserController@read');
-//Route::get('/user/{id}', 'App\Http\Controllers\UserController@read');
+Route::get('/user', 'App\Http\Controllers\UserController@read');
+Route::get('/user/{id}', 'App\Http\Controllers\UserController@read');
 
 Route::post('/feed', 'App\Http\Controllers\FeedController@create');
 
-//Route::post('/post/{id}/like', 'App\Http\Controllers\PostController@like');
-//Route::post('/post/{id}/comment', 'App\Http\Controllers\PostController@comment');
+Route::post('/post/{id}/like', 'App\Http\Controllers\PostController@like');
+Route::post('/post/{id}/comment', 'App\Http\Controllers\PostController@comment');
 
-//Route::get('/seach', 'App\Http\Controllers\SearchController@search');
+Route::get('/search', 'App\Http\Controllers\SearchController@search');
