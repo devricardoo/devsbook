@@ -71,9 +71,6 @@ class UserController extends Controller
                 return response()->json(['error' => 'as senhas não conferem!'], 422);
             }
         }
-
-
-
         $user->save();
     }
 
