@@ -11,6 +11,15 @@ use App\Models\PostComment;
 use App\Models\UserRelation;
 use App\Models\User;
 
+/**
+ * @OA\Tag(
+ *     name="Feed",
+ *     description="Authentication endpoints"
+ */
+
+/**
+ */
+
 class FeedController extends Controller
 {
     private $loggedUser;
@@ -20,6 +29,48 @@ class FeedController extends Controller
         $this->middleware('auth:api');
         $this->loggedUser = auth()->user();
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/feed",
+     *     summary="Cria uma nova postagem do tipo texto ou foto",
+     *     tags={"Feed"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"type"},
+     *                 @OA\Property(
+     *                     property="type",
+     *                     type="string",
+     *                     description="Tipo da postagem: 'text' ou 'photo'",
+     *                     enum={"text", "photo"}
+     *                 ),
+     *                 @OA\Property(
+     *                     property="body",
+     *                     type="string",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="photo",
+     *                     type="file",
+     *                     format="binary",
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Postagem criada com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação ou dados ausentes"
+     *     )
+     * )
+     */
+
 
     public function create(Request $request)
     {
@@ -75,6 +126,23 @@ class FeedController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/feed",
+     *     tags={"Feed"},
+     *     summary="Listar o feed",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Feed retornado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Feed não encontrado"
+     *     )
+     * )
+     */
+
     public function read(Request $request)
     {
         $page = intval($request->input('page'));
@@ -107,6 +175,7 @@ class FeedController extends Controller
 
         return $array;
     }
+
     private function _postListToObject($postList, $loggedId)
     {
         foreach ($postList as $postKey => $postItem) {
@@ -143,6 +212,31 @@ class FeedController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/user/feed",
+     *     summary="Retorna o feed do usuário por paginação",
+     *     tags={"Feed"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Número da página da listagem",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Feed do usuário retornado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Usuário não encontrado ou sem posts"
+     *     )
+     * )
+     */
+
+
     public function userFeed(Request $request, $id = false)
     {
         if ($id == false) {
@@ -171,6 +265,29 @@ class FeedController extends Controller
 
         return $array;
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/user/photos",
+     *     summary="Retorna as fotos do usuário logado com paginação",
+     *     tags={"Feed"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Fotos do usuário retornadas com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Usuário não encontrado ou sem fotos"
+     *     )
+     * )
+     */
+
 
     public function userPhotos(Request $request, $id = false)
     {
