@@ -10,6 +10,15 @@ use App\Models\User;
 use App\Models\UserRelation;
 use DateTime;
 
+/**
+ * @OA\Tag(
+ *     name="User",
+ *     description="Authentication endpoints"
+ */
+
+/**
+ */
+
 class UserController extends Controller
 {
     private $loggedUser;
@@ -19,6 +28,32 @@ class UserController extends Controller
         $this->middleware('auth:api');
         $this->loggedUser = auth()->user();
     }
+
+    /**
+     * @OA\Put(
+     *     path="/api/user",
+     *     tags={"User"},
+     *     summary="Atualizar informações do usuário logado",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example=""),
+     *             @OA\Property(property="email", type="string", format="email", example=""),
+     *             @OA\Property(property="password", type="string", example=""),
+     *             @OA\Property(property="password_confirmation", type="string", example=""),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuário atualizado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação"
+     *     )
+     * )
+     */
 
     public function update(Request $request)
     {
@@ -74,6 +109,33 @@ class UserController extends Controller
         $user->save();
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/user/avatar",
+     *     tags={"User"},
+     *     summary="Adicionar avatar ao usuário logado",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="avatar",
+     *                     type="file",
+     *                     format="binary",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Avatar adicionado com sucesso"
+     *     ),
+     *     @OA\Response(response=400, description="Dados inválidos"),
+     * )
+     */
+
     public function updateAvatar(Request $request)
     {
         $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
@@ -102,6 +164,33 @@ class UserController extends Controller
             return response()->json(['error' => 'Arquivo não enviado!'], 422);
         }
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/user/cover",
+     *     tags={"User"},
+     *     summary="Adicionar cover ao usuário logado",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="cover",
+     *                     type="file",
+     *                     format="binary",
+     *                 ),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cover adicionado com sucesso"
+     *     ),
+     *     @OA\Response(response=400, description="Dados inválidos"),
+     * )
+     */
 
     public function updateCover(Request $request)
     {
