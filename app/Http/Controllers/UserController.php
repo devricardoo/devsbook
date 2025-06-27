@@ -221,6 +221,23 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/user",
+     *     tags={"User"},
+     *     summary="Listar o usuário logado",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuário retornado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Usuário não encontrado"
+     *     )
+     * )
+     */
+
     public function read($id = false) //o id é opcional
     {
         if ($id) {
