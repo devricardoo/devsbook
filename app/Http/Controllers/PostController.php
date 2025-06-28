@@ -8,6 +8,15 @@ use App\Models\Post;
 use App\Models\PostComment;
 use App\Models\PostLike;
 
+/**
+ * @OA\Tag(
+ *     name="Post",
+ *     description="Authentication endpoints"
+ */
+
+/**
+ */
+
 class PostController extends Controller
 {
     private $loggedUser;
@@ -17,6 +26,30 @@ class PostController extends Controller
         $this->middleware('auth:api');
         $this->loggedUser = auth()->user();
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/post/{id}/like",
+     *     tags={"Post"},
+     *     summary="Curtir uma postagem",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID do post",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Postagem curtida com sucesso",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro ao curtir",
+     *     ),
+     * )
+     */
 
     public function like($id)
     {
@@ -59,6 +92,37 @@ class PostController extends Controller
 
         // 3. atualizar o contador de likes
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/post/{id}/comment",
+     *     tags={"Post"},
+     *     summary="Comentar uma postagem",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID do post",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="body",
+     *         in="query",
+     *         description="Comentario",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Postagem curtida com sucesso",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro ao curtir",
+     *     ),
+     * )
+     */
 
     public function comment(Request $request, $id)
     {
