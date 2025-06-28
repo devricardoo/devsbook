@@ -281,6 +281,146 @@
                 ]
             }
         },
+        "/api/post/{id}/like": {
+            "post": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Curtir uma postagem",
+                "operationId": "23afa7978d328839fa7d3fee582ffc05",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do post",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Postagem curtida com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro ao curtir"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/post/{id}/comment": {
+            "post": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Comentar uma postagem",
+                "operationId": "0efaf3fa4c32cd80098b27995efb472f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do post",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "body",
+                        "in": "query",
+                        "description": "Comentario",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Postagem curtida com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro ao curtir"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/search": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Filtrar usuários",
+                "operationId": "2754ee3c6371023cefd5b35cf65e9e07",
+                "parameters": [
+                    {
+                        "name": "txt",
+                        "in": "query",
+                        "description": "Texto de busca para filtrar os usuários",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Busca realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "users": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "avatar": {
+                                                        "type": "string",
+                                                        "format": "url"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Texto de busca não informado"
+                    },
+                    "404": {
+                        "description": "Erro na busca"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/user": {
             "get": {
                 "tags": [
@@ -446,6 +586,14 @@
         {
             "name": "Feed",
             "description": "Feed"
+        },
+        {
+            "name": "Post",
+            "description": "Post"
+        },
+        {
+            "name": "Search",
+            "description": "Search"
         },
         {
             "name": "User",
